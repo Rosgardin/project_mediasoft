@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.myexample.mydemo.Constants;
 import com.myexample.mydemo.domain.User;
-import com.myexample.mydemo.services.UserService;
+import com.myexample.mydemo.services.UserServiceImpl;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,13 +24,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class UserResource {
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> userMap) {
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
-        User user = userService.validateUser(email, password);
+        User user = userServiceImpl.validateUser(email, password);
 
         return new ResponseEntity<>(generateJwtToken(user), HttpStatus.OK);
     }
@@ -40,7 +40,7 @@ public class UserResource {
         String username = (String) userMap.get("username");
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
-        User user = userService.registerUser(username, email, password);
+        User user = userServiceImpl.registerUser(username, email, password);
 
         return new ResponseEntity<>(generateJwtToken(user), HttpStatus.OK);
     }
